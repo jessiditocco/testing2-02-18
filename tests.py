@@ -35,12 +35,12 @@ class PartyTests(unittest.TestCase):
 
 class PartyTestsDatabase(unittest.TestCase):
     """Flask tests that use the database."""
-
     def setUp(self):
         """Stuff to do before every test."""
 
         self.client = app.test_client()
         app.config['TESTING'] = True
+
 
         # Connect to test database (uncomment when testing database)
         connect_to_db(app, "postgresql:///testdb")
@@ -57,11 +57,43 @@ class PartyTestsDatabase(unittest.TestCase):
         db.drop_all()
 
     def test_games(self):
-        #FIXME: test that the games page displays the game from example_data()
-        result = self.client.get("/games")
+        #Test that the games page displays the game from example_data()
         
+        result = self.client.get("/games")
+
         self.assertIn("<td>Ticket to Ride</td>", result.data)
         self.assertIn("<td>a cross-country train adventure</td>", result.data)
+
+        ### STILL NEED TO FIX TEST_GAMES FUNCTION TO DEAL WITH THE LOGIC WE ADDED IN GAMES ROUTE
+        
+
+    # # if the user is not logged into the session, check that the user is correclty redirected home
+    # def redirects_redirect_home(self):
+    #     """Test that user can't see the games page when logged out."""
+
+    #     result = self.client.get("/games", follow_redirects=True)
+
+    #     self.assertIn("<h2>Please RSVP</h2>", result.data)
+        # self.assertNotIn("<td>Ticket to Ride</td>", result.data)
+        # self.assertNotIn("<td>a cross-country train adventure</td>", result.data)
+
+
+  #   def test_games_notlogin(self):
+  #       #FIXME: test that the games page displays the game from example_data()
+        
+  #       with self.client as c:
+  #           with c.session_transaction() as sess:
+  #               sess = {}
+
+  #       result = self.client.get("/games")
+
+  #       self.assertIn("<h2>Please RSVP</h2>", result.data)
+  #       self.assertNotIn("<h2>Party Details</h2>", result.data)
+
+
+  # #Be sure to include SECRET_KEY if you are using sessions
+  #       app.config['SECRET_KEY'] = 'key'
+
 
 if __name__ == "__main__":
     unittest.main()
